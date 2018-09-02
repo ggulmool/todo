@@ -1,8 +1,13 @@
 package me.ggulmool.todo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import me.ggulmool.todo.web.dto.TodoDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,37 +15,46 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@EqualsAndHashCode(of = {"id"})
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 @ToString(of = {"id", "contents"})
 @Entity
-@Table(name = "TODO")
-public class Todo {
+@Table(name = "todo")
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Todo extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TODO_ID", nullable = false)
+    @Column(name = "todo_id", nullable = false)
     private Long id;
 
-    @Column(name = "CONTENTS", nullable = false, length = 100)
+    @Column(name = "contents", nullable = false, length = 50)
     private String contents;
 
+    @Column(name = "display_contents", nullable = false, length = 100)
+    @Setter
+    @JsonProperty("display_contents")
+    private String displayContents;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "STATUS", nullable = false, length = 10)
+    @Column(name = "status", nullable = false, length = 10)
     private TodoStatus status;
 
     @ManyToMany(mappedBy = "parentTodos")
+    @JsonIgnore
     private List<Todo> refTodos = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
-            name = "TODO_PARENT_REF",
-            joinColumns = {@JoinColumn(name = "TODO_ID", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "PARENT_ID", nullable = false)}
+            name = "todo_parent_ref",
+            joinColumns = {@JoinColumn(name = "todo_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "parent_id", nullable = false)}
     )
+    @JsonIgnore
     private List<Todo> parentTodos = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Todo() {
@@ -48,18 +62,32 @@ public class Todo {
 
     public Todo(String contents) {
         this.contents = contents;
+        this.displayContents = contents;
         this.status = TodoStatus.DOING;
     }
 
     public Todo(Long id, String contents) {
         this.id = id;
         this.contents = contents;
+        this.displayContents = contents;
         this.status = TodoStatus.DOING;
+    }
+
+    public void addParentTodos(List<Todo> todos) {
+        if (todos.size() == 0) {
+            return;
+        }
+        parentTodos.clear();
+        refTodos.clear();
+        for (Todo todo : todos) {
+            addParentTodo(todo);
+        }
     }
 
     public void addParentTodo(Todo todo) {
         parentTodos.add(todo);
         todo.addRefTodo(this);
+        updateDisplayContents();
     }
 
     public void addRefTodo(Todo todo) {
@@ -72,7 +100,7 @@ public class Todo {
 
     public void done() {
         if (isExistDoingRefTodos()) {
-            throw new TodoNotCompleteException("reftodos not complete");
+            throw new TodoCannotDoneException("완료하지 않은 참조된 할일이 존재합니다.");
         }
         this.status = TodoStatus.DONE;
     }
@@ -82,11 +110,13 @@ public class Todo {
                 .anyMatch(t -> t.status.isDoing());
     }
 
-    public String displayContents() {
-        if (isExistParentTodos()) {
-            return contents + " " + parentTodosDisplayContents();
-        }
-        return contents;
+    public void updateDisplayContents() {
+        displayContents =  contents + " " + parentTodosDisplayContents();
+    }
+
+    public void update(TodoDto todoDto, List<Todo> parentTodos) {
+        this.contents = todoDto.getContents();
+        addParentTodos(parentTodos);
     }
 
     private String parentTodosDisplayContents() {
@@ -95,7 +125,7 @@ public class Todo {
                 .collect(Collectors.joining(" "));
     }
 
-    private boolean isExistParentTodos() {
-        return parentTodos.size() > 0;
+    public String generateRestUrl() {
+        return String.format("/api/todos/%d", id);
     }
 }

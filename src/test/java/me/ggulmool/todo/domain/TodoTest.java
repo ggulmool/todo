@@ -83,7 +83,7 @@ public class TodoTest {
         assertThat(todo1.getStatus()).isEqualTo(TodoStatus.DONE);
     }
 
-    @Test(expected = TodoNotCompleteException.class)
+    @Test(expected = TodoCannotDoneException.class)
     public void 할일_완료_처리시_참조할일이_완료되지_않은경우_익센션_케이스1() throws Exception {
         Todo todo1 = new Todo(1L, "집안일");
         Todo todo2 = new Todo(2L, "빨래");
@@ -93,7 +93,7 @@ public class TodoTest {
         fail("TodoNotCompleteException이 발생해야 한다.");
     }
 
-    @Test(expected = TodoNotCompleteException.class)
+    @Test(expected = TodoCannotDoneException.class)
     public void 할일_완료_처리시_참조할일이_완료되지_않은경우_익센션_케이스2() throws Exception {
         Todo todo1 = new Todo(1L, "집안일");
         Todo todo3 = new Todo(3L, "청소");
@@ -119,9 +119,9 @@ public class TodoTest {
         todo4.addParentTodo(todo1);
         todo4.addParentTodo(todo3);
 
-        assertThat(todo1.displayContents()).isEqualTo("집안일");
-        assertThat(todo2.displayContents()).isEqualTo("빨래 @1");
-        assertThat(todo3.displayContents()).isEqualTo("청소 @1");
-        assertThat(todo4.displayContents()).isEqualTo("방청소 @1 @3");
+        assertThat(todo1.getDisplayContents()).isEqualTo("집안일");
+        assertThat(todo2.getDisplayContents()).isEqualTo("빨래 @1");
+        assertThat(todo3.getDisplayContents()).isEqualTo("청소 @1");
+        assertThat(todo4.getDisplayContents()).isEqualTo("방청소 @1 @3");
     }
 }
