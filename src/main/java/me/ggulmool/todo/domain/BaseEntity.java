@@ -20,8 +20,8 @@ public abstract class BaseEntity {
     private LocalDateTime createDate;
 
     @LastModifiedDate
-    @Column(name = "modified_date", updatable = true)
-    private LocalDateTime modifiedDate;
+    @Column(name = "last_modified_date", updatable = true)
+    private LocalDateTime lastModifiedDate;
 
     public BaseEntity() {
     }
@@ -31,9 +31,9 @@ public abstract class BaseEntity {
         return getFormattedDate(createDate, "yyyy-MM-dd HH:mm:ss");
     }
 
-    @JsonProperty("modified_date")
-    public String getFormattedModifiedDate() {
-        return getFormattedDate(modifiedDate, "yyyy-MM-dd HH:mm:ss");
+    @JsonProperty("last_modified_date")
+    public String getFormattedLastModifiedDate() {
+        return getFormattedDate(lastModifiedDate, "yyyy-MM-dd HH:mm:ss");
     }
 
     private String getFormattedDate(LocalDateTime dateTime, String format) {

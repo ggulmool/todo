@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,15 +19,13 @@ import java.util.List;
 @Scope("prototype")
 public class TodoDto {
 
-    private Long id;
     private String contents;
-    private List<Long> parentIds;
+    private List<Long> parentIds = new ArrayList<>();
 
     @Autowired
     private TodoRepository todoRepository;
 
     public void setDotoRequest(TodoRequest todoRequest) {
-        this.id = todoRequest.getId();
         this.contents = todoRequest.getContents();
         this.parentIds = todoRequest.getParentIds();
     }

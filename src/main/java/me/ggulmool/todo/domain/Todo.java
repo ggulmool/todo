@@ -116,6 +116,7 @@ public class Todo extends BaseEntity {
 
     public void update(TodoDto todoDto, List<Todo> parentTodos) {
         this.contents = todoDto.getContents();
+        this.displayContents = todoDto.getContents();
         addParentTodos(parentTodos);
     }
 

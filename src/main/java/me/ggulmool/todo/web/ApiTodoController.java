@@ -5,10 +5,13 @@ import me.ggulmool.todo.domain.Todo;
 import me.ggulmool.todo.service.TodoService;
 import me.ggulmool.todo.web.dto.TodoDto;
 import me.ggulmool.todo.web.dto.TodoRequest;
+import me.ggulmool.todo.web.paging.PagingInfo;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +31,13 @@ public class ApiTodoController {
     private ObjectFactory<TodoDto> todoDtoFactory;
 
     @GetMapping
-    public Page<Todo> todos() {
-        PageRequest pageRequest = new PageRequest(0, 10);
-        return todoService.getTodos(pageRequest);
+    public PagingInfo<Todo> todos(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @SortDefault(value = {"lastModifiedDate"}, direction = Sort.Direction.DESC) Sort sort) {
+        PageRequest pageRequest = new PageRequest(page - 1, size, sort);
+        Page<Todo> todos = todoService.getTodos(pageRequest);
+        return new PagingInfo<Todo>(todos);
     }
 
     @PostMapping

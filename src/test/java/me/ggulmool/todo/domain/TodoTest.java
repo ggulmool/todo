@@ -48,14 +48,14 @@ public class TodoTest {
     }
 
     @Test
-    public void 할일_완료_처리_케이스1() throws Exception {
+    public void 할일_완료_처리_케이스1() {
         Todo todo1 = new Todo(1L, "집안일");
         todo1.done();
         assertThat(todo1.getStatus()).isEqualTo(TodoStatus.DONE);
     }
 
     @Test
-    public void 할일_완료_처리_케이스2() throws Exception {
+    public void 할일_완료_처리_케이스2() {
         Todo todo1 = new Todo(1L, "집안일");
         Todo todo2 = new Todo(2L, "빨래");
         Todo todo3 = new Todo(3L, "청소");
@@ -84,7 +84,7 @@ public class TodoTest {
     }
 
     @Test(expected = TodoCannotDoneException.class)
-    public void 할일_완료_처리시_참조할일이_완료되지_않은경우_익센션_케이스1() throws Exception {
+    public void 할일_완료_처리시_참조할일이_완료되지_않은경우_익센션_케이스1() {
         Todo todo1 = new Todo(1L, "집안일");
         Todo todo2 = new Todo(2L, "빨래");
 
@@ -94,7 +94,7 @@ public class TodoTest {
     }
 
     @Test(expected = TodoCannotDoneException.class)
-    public void 할일_완료_처리시_참조할일이_완료되지_않은경우_익센션_케이스2() throws Exception {
+    public void 할일_완료_처리시_참조할일이_완료되지_않은경우_익센션_케이스2() {
         Todo todo1 = new Todo(1L, "집안일");
         Todo todo3 = new Todo(3L, "청소");
         Todo todo4 = new Todo(4L, "방청소");
@@ -108,7 +108,7 @@ public class TodoTest {
     }
 
     @Test
-    public void 참조할일이_포함된_할일의_표시내용_확인() throws Exception {
+    public void 참조할일이_포함된_할일의_표시내용_확인() {
         Todo todo1 = new Todo(1L, "집안일");
         Todo todo2 = new Todo(2L, "빨래");
         Todo todo3 = new Todo(3L, "청소");

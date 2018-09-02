@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Users : View all</title>
+</head>
+<body ng-app="TodoApp">
+<h1 layout:fragment="header">Todos : View all</h1>
+<div layout:fragment="content" class="container" ng-controller="TodoCtrl as ctrl">
+    <div class="pull-right">
+        <a style="cursor: pointer;" ng-click="ctrl.addTodo()">할일 등록</a>
+        <a style="cursor: pointer;" ng-click="ctrl.updateTodo(4)">할일 수정</a>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <td class="span1">id</td>
+            <td class="span6">할일</td>
+            <td class="span3">작성일시</td>
+            <td class="span3">최종수정일시</td>
+            <td class="span2">상태</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="todo in ctrl.todos">
+            <td>{{ todo.id }}</td>
+            <td>{{ todo.display_contents }}</td>
+            <td>{{ todo.created_date}}</td>
+            <td>{{ todo.last_modified_date }}</td>
+            <td>{{ todo.status }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li ng-if="ctrl.pagingInfo.is_previous">
+                <a style="cursor: pointer;" ng-click="ctrl.prevPage()">&laquo;</a>
+            </li>
+            <li ng-repeat="p in ctrl.pagingInfo.page_elements" ng-class="{active: p.is_current == true}">
+                <a style="cursor: pointer;" ng-click="ctrl.page(p.page)">{{p.page}}</a>
+            </li>
+            <li ng-if="ctrl.pagingInfo.is_next">
+                <a style="cursor: pointer;" ng-click="ctrl.nextPage()">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
