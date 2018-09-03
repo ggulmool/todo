@@ -56,4 +56,10 @@ public class TodoRepositoryTest {
         List<Object[]> result = todoRepository.findAllTodos(new PageRequest(0, 10));
         result.forEach(arr -> System.out.println(Arrays.toString(arr)));
     }
+
+    @Test
+    public void 참조할일_목록조회() {
+        List<Todo> parentTodos = todoRepository.getParentTodosById(4L);
+        assertThat(parentTodos).hasSize(2);
+    }
 }

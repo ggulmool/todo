@@ -7,60 +7,112 @@
 <body ng-app="TodoApp">
 <h1 layout:fragment="header">Todos</h1>
 <div layout:fragment="content" class="container" ng-controller="TodoCtrl as ctrl">
-    <div class="pull-right">
+    <!--<div class="pull-right">
         <a style="cursor: pointer;" ng-click="ctrl.addTodo()">할일 등록</a>
         <a style="cursor: pointer;" ng-click="ctrl.updateTodo(4)">할일 수정</a>
-    </div>
+    </div>-->
 
-    <div>
-        <input type="text"
-               ng-model="ctrl.colorName"
-               class="form-control"
-               style="width:200px"
-               placeholder="Color Name. Try 'r' or 'b'"
-               auto-complete="ctrl.autoCompleteOptions" />
-    </div>
-    <div id="dropdownParent" class="inline-auto-complete-container"></div>
-
-    <table class="table table-bordered table-striped">
-        <thead>
-        <tr>
-            <td class="span1">id</td>
-            <td class="span6">할일</td>
-            <td class="span3">작성일시</td>
-            <td class="span3">최종수정일시</td>
-            <td class="span2">상태</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="todo in ctrl.todos">
-            <td>{{ todo.id }}</td>
-            <td>{{ todo.display_contents }}</td>
-            <td>{{ todo.created_date}}</td>
-            <td>{{ todo.last_modified_date }}</td>
-            <td>{{ todo.status }}</td>
-        </tr>
-        </tbody>
-    </table>
-    <nav aria-label="Page navigation">
-        <div style="text-align: center;">
-            <ul class="pagination">
-                <li ng-if="ctrl.pagingInfo.is_previous">
-                    <a style="cursor: pointer;" ng-click="ctrl.prevPage()" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li ng-repeat="p in ctrl.pagingInfo.page_elements" ng-class="{active: p.is_current == true}">
-                    <a style="cursor: pointer;" ng-click="ctrl.page(p.page)">{{p.page}}</a>
-                </li>
-                <li ng-if="ctrl.pagingInfo.is_next">
-                    <a style="cursor: pointer;" ng-click="ctrl.nextPage()" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>할일</th>
+                        <th>작성일시</th>
+                        <th>최종수정일시</th>
+                        <th>상태</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="todo in ctrl.todos">
+                        <td>{{ todo.id }}</td>
+                        <td><a style="cursor: pointer;" ng-click="ctrl.getTodoById(todo.id)">{{ todo.display_contents }}</a></td>
+                        <td>{{ todo.created_date}}</td>
+                        <td>{{ todo.last_modified_date }}</td>
+                        <td>{{ todo.status }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation">
+                    <div style="text-align: center;">
+                        <ul class="pagination">
+                            <li ng-if="ctrl.pagingInfo.is_previous">
+                                <a style="cursor: pointer;" ng-click="ctrl.prevPage()" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li ng-repeat="p in ctrl.pagingInfo.page_elements" ng-class="{active: p.is_current == true}">
+                                <a style="cursor: pointer;" ng-click="ctrl.page(p.page)">{{p.page}}</a>
+                            </li>
+                            <li ng-if="ctrl.pagingInfo.is_next">
+                                <a style="cursor: pointer;" ng-click="ctrl.nextPage()" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
         </div>
-    </nav>
+        <div class="col-md-4">
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <td>
+                        <span class="input-group-addon">할일</span>
+                        <input type="text"
+                               class="form-control"
+                               />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="input-group-addon">참조할일</span>
+                            <input type="text"
+                                   class="form-control"
+                                   />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div id="navbar" class="navbar-collapse collapse">
+                <form class="navbar-form navbar-left">
+                    <div class="input-group">
+                        <span class="input-group-addon">할일</span>
+                        <input type="text"
+                               ng-model="ctrl.newTodo"
+                               class="form-control"
+                               style="width:250px" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="sizing-addon2">@참조</span>
+                        <input type="text"
+                               ng-model="ctrl.parentId"
+                               class="form-control"
+                               style="width:200px"
+                               aria-describedby="sizing-addon2"
+                               auto-complete="ctrl.autoCompleteOptions"/>
+                    </div>
+                    <a class="btn btn-success" ng-click="ctrl.addTodo()">AddTodo</a>
+                    <br/><br/>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">참조목록</div>
+                        <div class="panel-body">
+                            <div ng-if="ctrl.parentTodos" class="selected-json">
+                                <pre>{{ctrl.parentTodos | json}}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

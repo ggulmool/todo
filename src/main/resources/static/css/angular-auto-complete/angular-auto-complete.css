@@ -70,3 +70,8 @@ div.auto-complete-container table.auto-complete {
         background-color: transparent;
         border-width: 0px;
 	}
+
+p.auto-complete {
+    padding: 0px 2px;
+    margin: 0px;
+}

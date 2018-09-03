@@ -5,55 +5,73 @@
     function TodoCtrl(TodoDataSvc) {
         var self = this;
         self.currentPage = 1;
-        self.currentSize = 3;
+        self.currentSize = 5;
 
-        var MOCK_CSS_COLORS = [
-            {
-                "name": "ANTIQUEWHITE",
-                "code": "#faebd7"
-            },
-            {
-                "name": "AQUA",
-                "code": "#00ffff"
-            },
-            {
-                "name": "AQUAMARINE",
-                "code": "#7fffd4"
-            },
-            {
-                "name": "BEIGE",
-                "code": "#f5f5dc"
-            }];
-
-        // http://demo.vickram.me/angular-auto-complete/ download demo
-        // https://getbootstrap.com/docs/3.3/getting-started/ download demo
+        // ============== auto-complete ==============
+        self.parentId = null;
+        self.parentIds = [];
+        self.parentTodos = [];
         self.autoCompleteOptions = {
             minimumChars: 1,
-            data: function (searchTerm) {
-                searchTerm = searchTerm.toUpperCase();
-
-                var colors = _.filter(MOCK_CSS_COLORS, function (color) {
-                    return color.name.startsWith(searchTerm);
+            data: function (searchText) {
+                return TodoDataSvc.getTodos(1, 5)
+                    .then(function (response) {
+                        searchText = searchText.toUpperCase();
+                        return _.filter(response.todos, function (todo) {
+                            return todo.contents.startsWith(searchText);
+                        });
+                    });
+            },
+            renderItem: function (todo) {
+                return {
+                    value: todo.id,
+                    label: "<p class='auto-complete' ng-bind-html='entry.item.contents'></p>"
+                };
+            },
+            itemSelected: function (e) {
+                var exists = _.filter(self.parentTodos, function(todo) {
+                    return todo.id == e.item.id;
                 });
 
-                return _.map(colors, 'name');
+                if (exists.length > 0) {
+                    alert('이미 참조목록에 포함된 할일 입니다.');
+                    //self.parentId = '';
+                    return;
+                }
+
+                self.parentTodos.push({
+                    'id': e.item.id,
+                    'contents': e.item.contents
+                });
+
+                self.parentIds.push(e.item.id);
+                //self.parentId = '';
             }
         };
 
-        self.modal = function() {
-            var element = angular.element('#my_modal_popup');
-            element.modal('show');
-        };
-
+        // ============== paging ==============
         getPagingTodos(self.currentPage, self.currentSize);
 
         self.addTodo = function() {
+            if (self.newTodo == '' || self.newTodo == null) {
+                alert('할일을 입력하세요.');
+                return;
+            }
+
+            if (!confirm('등록하시겠습니까?')) {
+                return;
+            }
+
             var todo = {
-                'contents':'테스트1'
+                'contents': self.newTodo,
+                'parentIds': self.parentIds
             };
+
             TodoDataSvc.addTodo(todo)
                 .then(function() {
                         alert('등록 성공');
+                        self.newTodo = "";
+                        self.parentIds = [];
                         getPagingTodos(1, self.currentSize)
                     },
                     function () {
@@ -76,6 +94,10 @@
                         alert('수정 실패')
                     }
                 );
+        };
+
+        self.getTodoById = function(todoId) {
+            alert(todoId);
         };
 
         self.prevPage = function () {

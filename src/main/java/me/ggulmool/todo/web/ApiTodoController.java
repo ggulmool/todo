@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/todos")
@@ -38,6 +39,11 @@ public class ApiTodoController {
         PageRequest pageRequest = new PageRequest(page - 1, size, sort);
         Page<Todo> todos = todoService.getTodos(pageRequest);
         return new PagingInfo<Todo>(todos);
+    }
+
+    @GetMapping("{todoId}/parents")
+    public List<Todo> getParentTodoById(@PathVariable("todoId") Long todoId) {
+        return todoService.getParentTodosById(todoId);
     }
 
     @PostMapping

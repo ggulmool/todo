@@ -11,6 +11,14 @@
             });
         };
 
+        self.getParentTodoById = function(todoId) {
+            var url = '/api/todos/' + todoId + '/parents';
+            return $http.get(url).then(function (response) {
+                console.log(response.data);
+                return response.data;
+            });
+        };
+
         self.addTodo = function(todo) {
             var url = '/api/todos'
             return $http.post(url, todo)
