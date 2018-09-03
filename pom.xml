@@ -54,17 +54,32 @@
 			<scope>test</scope>
 		</dependency>
 
+        <!-- FrontEnd -->
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>angularjs</artifactId>
-			<version>1.5.8</version>
+			<version>1.6.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
-			<version>2.3.2</version>
+			<version>3.3.7</version>
 		</dependency>
-
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>lodash</artifactId>
+            <version>4.17.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery-ui</artifactId>
+            <version>1.12.1</version>
+        </dependency>
 	</dependencies>
 
 	<build>

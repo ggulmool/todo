@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,9 +40,5 @@ public class TodoService {
     private Todo getTodo(Long todoId) {
         Optional<Todo> todoOpt = todoRepository.findById(todoId);
         return todoOpt.orElseThrow(() -> new TodoNotFoundException("할일이 존재하지 않습니다."));
-    }
-
-    private List<Todo> getParentTodos(List<Long> todoIds) {
-        return todoRepository.findByIdIn(todoIds);
     }
 }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import me.ggulmool.todo.web.dto.TodoDto;
 
@@ -31,7 +30,6 @@ public class Todo extends BaseEntity {
     private String contents;
 
     @Column(name = "display_contents", nullable = false, length = 100)
-    @Setter
     @JsonProperty("display_contents")
     private String displayContents;
 

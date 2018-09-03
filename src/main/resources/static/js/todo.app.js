@@ -1,1 +1,1 @@
-var app = angular.module('TodoApp', []);
+var app = angular.module('TodoApp', ['autoCompleteModule']);
