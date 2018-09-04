@@ -32,5 +32,13 @@
                     console.log(response)
                 });
         }
+
+        self.done = function(todoId, todo) {
+            var url = '/api/todos/' + todoId + '/done';
+            return $http.put(url, todo)
+                .then(function (response) {
+                    console.log(response)
+                });
+        }
     });
 })();

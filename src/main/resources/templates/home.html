@@ -7,11 +7,6 @@
 <body ng-app="TodoApp">
 <h1 layout:fragment="header">Todos</h1>
 <div layout:fragment="content" class="container" ng-controller="TodoCtrl as ctrl">
-    <!--<div class="pull-right">
-        <a style="cursor: pointer;" ng-click="ctrl.addTodo()">할일 등록</a>
-        <a style="cursor: pointer;" ng-click="ctrl.updateTodo(4)">할일 수정</a>
-    </div>-->
-
     <div class="row">
         <div class="col-md-8">
             <div class="table-responsive">
@@ -23,15 +18,17 @@
                         <th>작성일시</th>
                         <th>최종수정일시</th>
                         <th>상태</th>
+                        <th>완료</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="todo in ctrl.todos">
+                    <tr ng-repeat="todo in ctrl.pagingInfo.todos">
                         <td>{{ todo.id }}</td>
                         <td><a style="cursor: pointer;" ng-click="ctrl.getParentTodos(todo)">{{ todo.display_contents }}</a></td>
                         <td>{{ todo.created_date}}</td>
                         <td>{{ todo.last_modified_date }}</td>
                         <td>{{ todo.status }}</td>
+                        <td><a ng-if="todo.status == 'DOING'" style="cursor: pointer;" ng-click="ctrl.done(todo.id)">완료</a></td>
                     </tr>
                     </tbody>
                 </table>
@@ -57,36 +54,24 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <td>
-                        <span class="input-group-addon">할일</span>
-                        <input type="text"
-                               class="form-control"
-                               />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="input-group-addon">참조할일</span>
-                            <input type="text"
-                                   class="form-control"
-                                   />
-                        </td>
-                    </tr>
-                </table>
+            <div class="panel panel-default">
+                <div class="panel-heading">참조목록</div>
+                <div class="panel-body">
+                    <div ng-if="ctrl.parentTodos" class="selected-json">
+                        <pre>{{ctrl.parentTodos | json}}</pre>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div id="navbar" class="navbar-collapse collapse">
                 <form class="navbar-form navbar-left">
                     <div class="input-group">
                         <span class="input-group-addon">할일</span>
                         <input type="text"
-                               ng-model="ctrl.newTodo"
+                               ng-model="ctrl.contents"
                                class="form-control"
                                style="width:250px" />
                     </div>
@@ -99,16 +84,9 @@
                                aria-describedby="sizing-addon2"
                                auto-complete="ctrl.autoCompleteOptions"/>
                     </div>
-                    <a class="btn btn-success" ng-click="ctrl.addTodo()">AddTodo</a>
-                    <br/><br/>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">참조목록</div>
-                        <div class="panel-body">
-                            <div ng-if="ctrl.parentTodos" class="selected-json">
-                                <pre>{{ctrl.parentTodos | json}}</pre>
-                            </div>
-                        </div>
-                    </div>
+                    <a ng-if="ctrl.todoId == ''" class="btn btn-success" ng-click="ctrl.addTodo()">할일등록</a>
+                    <a ng-if="ctrl.todoId != ''" class="btn btn-success" ng-click="ctrl.updateTodo()">할일수정</a>
+                    <a ng-if="ctrl.todoId != ''" class="btn btn-info" ng-click="ctrl.delParentTodos()">참조삭제</a>
                 </form>
             </div>
         </div>

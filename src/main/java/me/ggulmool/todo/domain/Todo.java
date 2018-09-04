@@ -72,13 +72,12 @@ public class Todo extends BaseEntity {
     }
 
     public void addParentTodos(List<Todo> todos) {
-        if (todos.size() == 0) {
-            return;
-        }
         parentTodos.clear();
         refTodos.clear();
-        for (Todo todo : todos) {
-            addParentTodo(todo);
+        if (todos.size() > 0) {
+            for (Todo todo : todos) {
+                addParentTodo(todo);
+            }
         }
     }
 

@@ -49,7 +49,6 @@ public class ApiTodoController {
     @PostMapping
     public ResponseEntity addTodo(@RequestBody TodoRequest todoRequest) {
         TodoDto todoDto = todoDtoFactory.getObject();
-        log.info("tododto - {}", todoDto);
         todoDto.setTodoRequest(todoRequest);
         Todo todo = todoService.addTodo(todoDto);
 
@@ -61,9 +60,14 @@ public class ApiTodoController {
     @PutMapping("/{todoId}")
     public ResponseEntity updateTodo(@PathVariable Long todoId, @RequestBody TodoRequest todoRequest) {
         TodoDto todoDto = todoDtoFactory.getObject();
-        log.info("tododto - {}", todoDto);
         todoDto.setTodoRequest(todoRequest);
         Todo updatedTodo = todoService.update(todoId, todoDto);
         return new ResponseEntity<>(updatedTodo, HttpStatus.OK);
+    }
+
+    @PutMapping("/{todoId}/done")
+    public ResponseEntity done(@PathVariable Long todoId) {
+        todoService.done(todoId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

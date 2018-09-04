@@ -21,8 +21,6 @@ public class TodoTest {
         // 2 - 1 참조
         // 3 - 1 참조
         // 4 - 1, 3 참조
-
-        // given
         todo1 = new Todo(1L, "집안일");
         todo2 = new Todo(2L, "빨래");
         todo3 = new Todo(3L, "청소");
@@ -103,10 +101,7 @@ public class TodoTest {
 
     @Test
     public void ID2_할일의_완료_처리_참조하고있는_할일이_없는경우() {
-        // when
         todo2.done();
-
-        // then
         assertThat(todo2.getStatus()).isEqualTo(TodoStatus.DONE);
     }
 
