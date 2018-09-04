@@ -47,6 +47,12 @@
                     return;
                 }
 
+                if (e.item.id == self.todoId) {
+                    alert('자기 자신은 참조할 수 없습니다.');
+                    self.parentId = '';
+                    return;
+                }
+
                 self.parentTodos.push({
                     'id': e.item.id,
                     'contents': e.item.contents
@@ -158,8 +164,8 @@
                     alert('완료처리 되었습니다.');
                     viewClear();
                     getPagingTodos(1, self.pageSize)
-                }, function() {
-                    alert('완료처리실패');
+                }, function(response) {
+                    alert(response.data.message);
                 });
         };
 
