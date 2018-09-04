@@ -23,12 +23,17 @@ public class TodoService {
         return todoRepository.findAll(pageable);
     }
 
+    public List<Todo> getParentTodos(Long todoId) {
+        Optional<Todo> todoOpt = todoRepository.findById(todoId);
+        Todo todo = todoOpt.orElseThrow(() -> new TodoNotFoundException("해당 id의 할일이 존재하지 않습니다."));
+        return todo.getParentTodos();
+    }
+
     @Transactional
     public Todo addTodo(TodoDto todoDto) {
         Todo todo = todoDto.convertTodo();
         todo.addParentTodos(todoDto.getParentTodos());
-        todoRepository.save(todo);
-        return todo;
+        return todoRepository.save(todo);
     }
 
     @Transactional
@@ -38,12 +43,14 @@ public class TodoService {
         return todo;
     }
 
+    @Transactional
+    public void done(Long todoId) {
+        Todo todo = getTodo(todoId);
+        todo.done();
+    }
+
     private Todo getTodo(Long todoId) {
         Optional<Todo> todoOpt = todoRepository.findById(todoId);
         return todoOpt.orElseThrow(() -> new TodoNotFoundException("할일이 존재하지 않습니다."));
-    }
-
-    public List<Todo> getParentTodosById(Long todoId) {
-        return null;
     }
 }

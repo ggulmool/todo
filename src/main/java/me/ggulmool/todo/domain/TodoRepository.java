@@ -20,7 +20,4 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     Optional<Todo> findById(Long id);
 
     List<Todo> findByIdIn(List<Long> ids);
-
-    @Query(value = "SELECT t, p FROM Todo t JOIN t.parentTodos p ON t.id = p.id WHERE p.id = ?1")
-    List<Todo> getParentTodosById(long todoId);
 }

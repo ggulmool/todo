@@ -25,7 +25,7 @@ public class TodoDto {
     @Autowired
     private TodoRepository todoRepository;
 
-    public void setDotoRequest(TodoRequest todoRequest) {
+    public void setTodoRequest(TodoRequest todoRequest) {
         this.contents = todoRequest.getContents();
         this.parentIds = todoRequest.getParentIds();
     }

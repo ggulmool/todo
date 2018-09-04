@@ -28,7 +28,7 @@
                     <tbody>
                     <tr ng-repeat="todo in ctrl.todos">
                         <td>{{ todo.id }}</td>
-                        <td><a style="cursor: pointer;" ng-click="ctrl.getTodoById(todo.id)">{{ todo.display_contents }}</a></td>
+                        <td><a style="cursor: pointer;" ng-click="ctrl.getParentTodos(todo)">{{ todo.display_contents }}</a></td>
                         <td>{{ todo.created_date}}</td>
                         <td>{{ todo.last_modified_date }}</td>
                         <td>{{ todo.status }}</td>

@@ -24,7 +24,7 @@
             },
             renderItem: function (todo) {
                 return {
-                    value: todo.id,
+                    value: todo.contents,
                     label: "<p class='auto-complete' ng-bind-html='entry.item.contents'></p>"
                 };
             },
@@ -35,7 +35,7 @@
 
                 if (exists.length > 0) {
                     alert('이미 참조목록에 포함된 할일 입니다.');
-                    //self.parentId = '';
+                    self.parentId = '';
                     return;
                 }
 
@@ -45,7 +45,6 @@
                 });
 
                 self.parentIds.push(e.item.id);
-                //self.parentId = '';
             }
         };
 
@@ -70,7 +69,8 @@
             TodoDataSvc.addTodo(todo)
                 .then(function() {
                         alert('등록 성공');
-                        self.newTodo = "";
+                        self.newTodo = '';
+                        self.parentId = '';
                         self.parentIds = [];
                         getPagingTodos(1, self.currentSize)
                     },
@@ -96,8 +96,12 @@
                 );
         };
 
-        self.getTodoById = function(todoId) {
-            alert(todoId);
+        self.getParentTodos = function(todo) {
+            TodoDataSvc.getParentTodos(todo.id)
+                .then(function(data){
+                    console.log(todo);
+                    console.log(data);
+                });
         };
 
         self.prevPage = function () {

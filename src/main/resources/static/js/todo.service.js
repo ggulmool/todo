@@ -6,15 +6,13 @@
         self.getTodos = function(page, size) {
             var url = '/api/todos?page=' + page + '&size=' + size;
             return $http.get(url).then(function (response) {
-                console.log(response.data);
                 return response.data;
             });
         };
 
-        self.getParentTodoById = function(todoId) {
+        self.getParentTodos = function(todoId) {
             var url = '/api/todos/' + todoId + '/parents';
             return $http.get(url).then(function (response) {
-                console.log(response.data);
                 return response.data;
             });
         };
@@ -31,7 +29,7 @@
             var url = '/api/todos/' + todoId;
             return $http.put(url, todo)
                 .then(function (response) {
-                    console.log(response);
+                    console.log(response)
                 });
         }
     });

@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,7 +47,8 @@ public class TodoRepositoryTest {
 
     @Test
     public void 할일_참조() {
-        Todo savedTodo1 = todoRepository.findOne(1L);
+        Optional<Todo> todoOpt = todoRepository.findById(1L);
+        Todo savedTodo1 = todoOpt.get();
         assertThat(savedTodo1.getRefTodos()).hasSize(3);
         assertThat(savedTodo1.getParentTodos()).hasSize(0);
     }
@@ -59,7 +61,9 @@ public class TodoRepositoryTest {
 
     @Test
     public void 참조할일_목록조회() {
-        List<Todo> parentTodos = todoRepository.getParentTodosById(4L);
+        Optional<Todo> todoOpt = todoRepository.findById(4L);
+        Todo todo = todoOpt.get();
+        List<Todo> parentTodos = todo.getParentTodos();
         assertThat(parentTodos).hasSize(2);
     }
 }
