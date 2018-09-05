@@ -1,8 +1,8 @@
 package me.ggulmool.todo.service;
 
 import me.ggulmool.todo.domain.Todo;
-import me.ggulmool.todo.domain.TodoNotFoundException;
-import me.ggulmool.todo.domain.TodoRepository;
+import me.ggulmool.todo.domain.exception.TodoNotFoundException;
+import me.ggulmool.todo.domain.support.TodoRepository;
 import me.ggulmool.todo.domain.User;
 import me.ggulmool.todo.web.dto.TodoDto;
 import org.springframework.beans.factory.annotation.Autowired;

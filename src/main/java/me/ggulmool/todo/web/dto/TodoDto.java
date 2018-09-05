@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.ggulmool.todo.domain.Todo;
-import me.ggulmool.todo.domain.TodoRepository;
+import me.ggulmool.todo.domain.support.TodoRepository;
 import me.ggulmool.todo.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;

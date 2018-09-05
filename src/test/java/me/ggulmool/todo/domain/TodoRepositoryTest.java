@@ -1,6 +1,7 @@
 package me.ggulmool.todo.domain;
 
 import lombok.extern.slf4j.Slf4j;
+import me.ggulmool.todo.domain.support.TodoRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

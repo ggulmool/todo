@@ -1,5 +1,6 @@
-package me.ggulmool.todo.domain;
+package me.ggulmool.todo.domain.support;
 
+import me.ggulmool.todo.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -34,7 +34,7 @@ public class ApiTodoController {
     private ObjectFactory<TodoDto> todoDtoFactory;
 
     @GetMapping
-    public PagingInfo<Todo> todos(
+    public ResponseEntity<PagingInfo<Todo>> todos(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @SortDefault(value = {"id"}, direction = Sort.Direction.DESC) Sort sort,
@@ -42,12 +42,12 @@ public class ApiTodoController {
 
         PageRequest pageRequest = new PageRequest(page - 1, size, sort);
         Page<Todo> todos = todoService.getTodos(pageRequest, getUser(request));
-        return new PagingInfo<Todo>(todos);
+        return ResponseEntity.ok(new PagingInfo<Todo>(todos));
     }
 
     @GetMapping("{todoId}/parents")
-    public List<Todo> getParentTodos(@PathVariable("todoId") Long todoId, HttpServletRequest request) {
-        return todoService.getParentTodos(todoId, getUser(request));
+    public ResponseEntity<List<Todo>> getParentTodos(@PathVariable("todoId") Long todoId, HttpServletRequest request) {
+        return ResponseEntity.ok(todoService.getParentTodos(todoId, getUser(request)));
     }
 
     @PostMapping

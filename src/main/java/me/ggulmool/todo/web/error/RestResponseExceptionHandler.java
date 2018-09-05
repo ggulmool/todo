@@ -1,9 +1,9 @@
 package me.ggulmool.todo.web.error;
 
 import lombok.extern.slf4j.Slf4j;
-import me.ggulmool.todo.domain.TodoCannotDoneException;
-import me.ggulmool.todo.domain.TodoNotFoundException;
-import me.ggulmool.todo.domain.UnAuthenticationException;
+import me.ggulmool.todo.domain.exception.TodoCannotDoneException;
+import me.ggulmool.todo.domain.exception.TodoNotFoundException;
+import me.ggulmool.todo.domain.exception.UnAuthenticationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

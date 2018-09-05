@@ -1,4 +1,4 @@
-package me.ggulmool.todo.domain;
+package me.ggulmool.todo.domain.exception;
 
 public class TodoCannotDoneException extends RuntimeException {
 

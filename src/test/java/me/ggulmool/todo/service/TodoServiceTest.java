@@ -1,6 +1,8 @@
 package me.ggulmool.todo.service;
 
 import me.ggulmool.todo.domain.*;
+import me.ggulmool.todo.domain.exception.TodoCannotDoneException;
+import me.ggulmool.todo.domain.support.TodoRepository;
 import me.ggulmool.todo.web.dto.TodoDto;
 import me.ggulmool.todo.web.dto.TodoRequest;
 import org.junit.Before;

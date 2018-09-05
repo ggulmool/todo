@@ -1,5 +1,7 @@
-package me.ggulmool.todo.domain;
+package me.ggulmool.todo.domain.support;
 
+import me.ggulmool.todo.domain.Todo;
+import me.ggulmool.todo.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

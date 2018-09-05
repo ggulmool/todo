@@ -1,5 +1,6 @@
 package me.ggulmool.todo.domain;
 
+import me.ggulmool.todo.domain.exception.TodoCannotDoneException;
 import org.junit.Before;
 import org.junit.Test;
 

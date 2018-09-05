@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import me.ggulmool.todo.domain.exception.TodoCannotDoneException;
+import me.ggulmool.todo.domain.support.BaseEntity;
 import me.ggulmool.todo.web.dto.TodoDto;
 
 import javax.persistence.*;
@@ -57,7 +59,7 @@ public class Todo extends BaseEntity {
 
     public Todo() {
     }
-    
+
     public Todo(String contents, User user) {
         this.contents = contents;
         this.displayContents = contents;

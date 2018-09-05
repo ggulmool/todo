@@ -1,7 +1,7 @@
 package me.ggulmool.todo.security;
 
 import lombok.extern.slf4j.Slf4j;
-import me.ggulmool.todo.domain.UnAuthenticationException;
+import me.ggulmool.todo.domain.exception.UnAuthenticationException;
 import me.ggulmool.todo.domain.User;
 import me.ggulmool.todo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

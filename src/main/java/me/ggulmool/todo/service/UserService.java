@@ -1,8 +1,8 @@
 package me.ggulmool.todo.service;
 
-import me.ggulmool.todo.domain.UnAuthenticationException;
+import me.ggulmool.todo.domain.exception.UnAuthenticationException;
 import me.ggulmool.todo.domain.User;
-import me.ggulmool.todo.domain.UserRepository;
+import me.ggulmool.todo.domain.support.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
