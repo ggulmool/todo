@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.ggulmool.todo.domain.Todo;
 import me.ggulmool.todo.domain.TodoRepository;
+import me.ggulmool.todo.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,21 +21,23 @@ import java.util.List;
 public class TodoDto {
 
     private String contents;
+    private User user;
     private List<Long> parentIds = new ArrayList<>();
 
     @Autowired
     private TodoRepository todoRepository;
 
-    public void setTodoRequest(TodoRequest todoRequest) {
+    public void setTodoRequest(TodoRequest todoRequest, User user) {
         this.contents = todoRequest.getContents();
+        this.user = user;
         this.parentIds = todoRequest.getParentIds();
     }
 
     public Todo convertTodo() {
-        return new Todo(contents);
+        return new Todo(contents, user);
     }
 
     public List<Todo> getParentTodos() {
-        return todoRepository.findByIdIn(parentIds);
+        return todoRepository.findTodoByIdInAndUser(parentIds, user);
     }
 }

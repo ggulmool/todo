@@ -18,21 +18,21 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler({ UnAuthenticationException.class })
     public ResponseEntity<Object> handleUnAuthentication(final RuntimeException ex, final WebRequest request) {
-        log.error("401 Status Code", ex);
+        log.error("401 Unauthorized", ex);
         final ErrorResponse bodyOfResponse = new ErrorResponse(ex.getMessage(), "unauthentication.exception");
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }
 
     @ExceptionHandler({ TodoNotFoundException.class })
     public ResponseEntity<Object> handleTodoFound(final RuntimeException ex, final WebRequest request) {
-        log.error("500 Status Code", ex);
+        log.error("500 Internal Server Error", ex);
         final ErrorResponse bodyOfResponse = new ErrorResponse(ex.getMessage(), "todo.not.found.exception");
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler({ TodoCannotDoneException.class })
     public ResponseEntity<Object> handleTodoDone(final RuntimeException ex, final WebRequest request) {
-        log.error("500 Status Code", ex);
+        log.error("500 Internal Server Error", ex);
         final ErrorResponse bodyOfResponse = new ErrorResponse(ex.getMessage(), "todo.cannot.done.exception");
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }

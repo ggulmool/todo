@@ -3,6 +3,7 @@ package me.ggulmool.todo.service;
 import me.ggulmool.todo.domain.Todo;
 import me.ggulmool.todo.domain.TodoNotFoundException;
 import me.ggulmool.todo.domain.TodoRepository;
+import me.ggulmool.todo.domain.User;
 import me.ggulmool.todo.web.dto.TodoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,13 +20,14 @@ public class TodoService {
     @Autowired
     private TodoRepository todoRepository;
 
-    public Page<Todo> getTodos(Pageable pageable) {
-        return todoRepository.findAll(pageable);
+    @Transactional(readOnly = true)
+    public Page<Todo> getTodos(Pageable pageable, User user) {
+        return todoRepository.findTodoByUser(pageable, user);
     }
 
-    public List<Todo> getParentTodos(Long todoId) {
-        Optional<Todo> todoOpt = todoRepository.findById(todoId);
-        Todo todo = todoOpt.orElseThrow(() -> new TodoNotFoundException("해당 id의 할일이 존재하지 않습니다."));
+    @Transactional(readOnly = true)
+    public List<Todo> getParentTodos(Long todoId, User user) {
+        Todo todo = getTodo(todoId, user);
         return todo.getParentTodos();
     }
 
@@ -38,19 +40,19 @@ public class TodoService {
 
     @Transactional
     public Todo update(Long todoId, TodoDto todoDto) {
-        Todo todo = getTodo(todoId);
+        Todo todo = getTodo(todoId, todoDto.getUser());
         todo.update(todoDto, todoDto.getParentTodos());
         return todo;
     }
 
     @Transactional
-    public void done(Long todoId) {
-        Todo todo = getTodo(todoId);
+    public void done(Long todoId, User user) {
+        Todo todo = getTodo(todoId, user);
         todo.done();
     }
 
-    private Todo getTodo(Long todoId) {
-        Optional<Todo> todoOpt = todoRepository.findById(todoId);
+    private Todo getTodo(Long todoId, User user) {
+        Optional<Todo> todoOpt = todoRepository.findTodoByIdAndUser(todoId, user);
         return todoOpt.orElseThrow(() -> new TodoNotFoundException("할일이 존재하지 않습니다."));
     }
 }

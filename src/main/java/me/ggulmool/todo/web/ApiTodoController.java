@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 
@@ -36,22 +37,23 @@ public class ApiTodoController {
     public PagingInfo<Todo> todos(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
-            @SortDefault(value = {"lastModifiedDate"}, direction = Sort.Direction.DESC) Sort sort, @ModelAttribute("user") User user) {
-        log.info("user : {}", user);
+            @SortDefault(value = {"id"}, direction = Sort.Direction.DESC) Sort sort,
+            HttpServletRequest request) {
+
         PageRequest pageRequest = new PageRequest(page - 1, size, sort);
-        Page<Todo> todos = todoService.getTodos(pageRequest);
+        Page<Todo> todos = todoService.getTodos(pageRequest, getUser(request));
         return new PagingInfo<Todo>(todos);
     }
 
     @GetMapping("{todoId}/parents")
-    public List<Todo> getParentTodos(@PathVariable("todoId") Long todoId) {
-        return todoService.getParentTodos(todoId);
+    public List<Todo> getParentTodos(@PathVariable("todoId") Long todoId, HttpServletRequest request) {
+        return todoService.getParentTodos(todoId, getUser(request));
     }
 
     @PostMapping
-    public ResponseEntity addTodo(@RequestBody TodoRequest todoRequest) {
+    public ResponseEntity addTodo(@RequestBody TodoRequest todoRequest, HttpServletRequest request) {
         TodoDto todoDto = todoDtoFactory.getObject();
-        todoDto.setTodoRequest(todoRequest);
+        todoDto.setTodoRequest(todoRequest, getUser(request));
         Todo todo = todoService.addTodo(todoDto);
 
         HttpHeaders headers = new HttpHeaders();
@@ -60,16 +62,20 @@ public class ApiTodoController {
     }
 
     @PutMapping("/{todoId}")
-    public ResponseEntity updateTodo(@PathVariable Long todoId, @RequestBody TodoRequest todoRequest) {
+    public ResponseEntity updateTodo(@PathVariable Long todoId, @RequestBody TodoRequest todoRequest, HttpServletRequest request) {
         TodoDto todoDto = todoDtoFactory.getObject();
-        todoDto.setTodoRequest(todoRequest);
+        todoDto.setTodoRequest(todoRequest, getUser(request));
         Todo updatedTodo = todoService.update(todoId, todoDto);
         return new ResponseEntity<>(updatedTodo, HttpStatus.OK);
     }
 
     @PutMapping("/{todoId}/done")
-    public ResponseEntity done(@PathVariable Long todoId) {
-        todoService.done(todoId);
+    public ResponseEntity done(@PathVariable Long todoId, HttpServletRequest request) {
+        todoService.done(todoId, getUser(request));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private User getUser(HttpServletRequest request) {
+        return (User) request.getAttribute("user");
     }
 }

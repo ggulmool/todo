@@ -2,10 +2,11 @@
     var app = angular.module('TodoApp');
     app.controller('TodoCtrl', TodoCtrl);
 
-    function TodoCtrl(TodoDataSvc) {
+    function TodoCtrl(TodoDataSvc, ngProgressFactory) {
         var self = this;
         self.page = 1;
         self.pageSize = 10;
+        self.progressbar = ngProgressFactory.createInstance();
 
         // ============== auto-complete ==============
         self.todoId = '';
@@ -138,6 +139,7 @@
         };
 
         self.getParentTodos = function(todo) {
+            self.progressbar.start();
             TodoDataSvc.getParentTodos(todo.id)
                 .then(function(data) {
                     viewClear();
@@ -151,6 +153,7 @@
                             contents: t.contents
                         });
                     });
+                    self.progressbar.complete();
                 });
         };
 
@@ -182,9 +185,11 @@
         };
 
         function getPagingTodos(page, size) {
+            self.progressbar.start();
             TodoDataSvc.getTodos(page, size)
                 .then(function (data) {
                     self.pagingInfo = data;
+                    self.progressbar.complete();
                 });
         }
 

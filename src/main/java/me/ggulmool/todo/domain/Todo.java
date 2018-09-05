@@ -57,17 +57,19 @@ public class Todo extends BaseEntity {
 
     public Todo() {
     }
-
-    public Todo(String contents) {
+    
+    public Todo(String contents, User user) {
         this.contents = contents;
         this.displayContents = contents;
+        this.user = user;
         this.status = TodoStatus.DOING;
     }
 
-    public Todo(Long id, String contents) {
+    public Todo(Long id, String contents, User user) {
         this.id = id;
         this.contents = contents;
         this.displayContents = contents;
+        this.user = user;
         this.status = TodoStatus.DOING;
     }
 
@@ -117,13 +119,17 @@ public class Todo extends BaseEntity {
         addParentTodos(parentTodos);
     }
 
+    public String generateRestUrl() {
+        return String.format("/api/todos/%d", id);
+    }
+
+    public void assignUser(User user) {
+        this.user = user;
+    }
+
     private String parentTodosDisplayContents() {
         return parentTodos.stream()
                 .map(t -> "@" + t.id)
                 .collect(Collectors.joining(" "));
-    }
-
-    public String generateRestUrl() {
-        return String.format("/api/todos/%d", id);
     }
 }

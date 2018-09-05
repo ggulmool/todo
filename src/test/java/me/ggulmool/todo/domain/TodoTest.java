@@ -14,6 +14,7 @@ public class TodoTest {
     private Todo todo2;
     private Todo todo3;
     private Todo todo4;
+    private User user = new User("user1", "사용자1");
 
     @Before
     public void setUp() throws Exception {
@@ -21,10 +22,10 @@ public class TodoTest {
         // 2 - 1 참조
         // 3 - 1 참조
         // 4 - 1, 3 참조
-        todo1 = new Todo(1L, "집안일");
-        todo2 = new Todo(2L, "빨래");
-        todo3 = new Todo(3L, "청소");
-        todo4 = new Todo(4L, "방청소");
+        todo1 = new Todo(1L, "집안일", user);
+        todo2 = new Todo(2L, "빨래", user);
+        todo3 = new Todo(3L, "청소", user);
+        todo4 = new Todo(4L, "방청소", user);
 
         todo2.addParentTodo(todo1);
         todo3.addParentTodo(todo1);
@@ -62,7 +63,7 @@ public class TodoTest {
 
     @Test
     public void 할일_등록() {
-        Todo todo = new Todo(5L, "거실청소");
+        Todo todo = new Todo(5L, "거실청소", user);
 
         assertThat(todo.getId()).isEqualTo(5L);
         assertThat(todo.getContents()).isEqualTo("거실청소");
@@ -71,7 +72,7 @@ public class TodoTest {
 
     @Test
     public void 할일_등록시_참조할일_등록() {
-        Todo todo = new Todo(5L, "거실청소");
+        Todo todo = new Todo(5L, "거실청소", user);
         todo.addParentTodos(Arrays.asList(todo1, todo3));
 
         assertThat(todo.getParentTodos()).hasSize(2);

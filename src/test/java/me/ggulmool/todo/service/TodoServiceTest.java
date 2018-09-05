@@ -1,9 +1,6 @@
 package me.ggulmool.todo.service;
 
-import me.ggulmool.todo.domain.Todo;
-import me.ggulmool.todo.domain.TodoCannotDoneException;
-import me.ggulmool.todo.domain.TodoRepository;
-import me.ggulmool.todo.domain.TodoStatus;
+import me.ggulmool.todo.domain.*;
 import me.ggulmool.todo.web.dto.TodoDto;
 import me.ggulmool.todo.web.dto.TodoRequest;
 import org.junit.Before;
@@ -42,13 +39,14 @@ public class TodoServiceTest {
     private Todo todo2;
     private Todo todo3;
     private Todo todo4;
+    private User user = new User("user1", "사용자1");
 
     @Before
     public void setUp() throws Exception {
-        todo1 = new Todo(1L, "집안일");
-        todo2 = new Todo(2L, "빨래");
-        todo3 = new Todo(3L, "청소");
-        todo4 = new Todo(4L, "방청소");
+        todo1 = new Todo(1L, "집안일", user);
+        todo2 = new Todo(2L, "빨래", user);
+        todo3 = new Todo(3L, "청소", user);
+        todo4 = new Todo(4L, "방청소", user);
 
         todo2.addParentTodo(todo1);
         todo3.addParentTodo(todo1);
@@ -59,10 +57,10 @@ public class TodoServiceTest {
     public void 할일_목록_조회() {
         // given
         List<Todo> todos = Arrays.asList(todo1, todo2, todo3, todo4);
-        when(todoRepository.findAll(page)).thenReturn(new PageImpl<Todo>(todos, page, todos.size()));
+        when(todoRepository.findTodoByUser(page, user)).thenReturn(new PageImpl<Todo>(todos, page, todos.size()));
 
         // when
-        Page<Todo> results = todoService.getTodos(page);
+        Page<Todo> results = todoService.getTodos(page, user);
 
         // then
         assertThat(results.getContent()).hasSize(4);
@@ -72,10 +70,10 @@ public class TodoServiceTest {
     @Test
     public void ID4의_할일_참조_목록_조회() {
         // given
-        when(todoRepository.findById(4L)).thenReturn(Optional.of(todo4));
+        when(todoRepository.findTodoByIdAndUser(4L, user)).thenReturn(Optional.of(todo4));
 
         // when
-        List<Todo> parentTodos = todoService.getParentTodos(4L);
+        List<Todo> parentTodos = todoService.getParentTodos(4L, user);
 
         // then
         assertThat(parentTodos).contains(todo1, todo3);
@@ -89,7 +87,7 @@ public class TodoServiceTest {
     public void 할일_등록() {
         // given
         TodoRequest addTodoRequest = TodoRequest.builder().contents("집안일").build();
-        todoDto.setTodoRequest(addTodoRequest);
+        todoDto.setTodoRequest(addTodoRequest, user);
         when(todoRepository.save(todoDto.convertTodo())).thenReturn(todo1);
 
         // when
@@ -103,8 +101,8 @@ public class TodoServiceTest {
     public void 할일_등록시_참조할일_등록() {
         // given
         TodoRequest addTodoRequest = TodoRequest.builder().contents("방청소").parentIds(Arrays.asList(1L, 3L)).build();
-        todoDto.setTodoRequest(addTodoRequest);
-        when(todoRepository.findByIdIn(todoDto.getParentIds())).thenReturn(Arrays.asList(todo1, todo3));
+        todoDto.setTodoRequest(addTodoRequest, user);
+        when(todoRepository.findTodoByIdInAndUser(todoDto.getParentIds(), user)).thenReturn(Arrays.asList(todo1, todo3));
         when(todoRepository.save(todoDto.convertTodo())).thenReturn(todo4);
 
         // when
@@ -119,8 +117,8 @@ public class TodoServiceTest {
     public void 할일_수정() {
         // given
         TodoRequest updateTodoRequest = TodoRequest.builder().contents("집안일 수정").build();
-        todoDto.setTodoRequest(updateTodoRequest);
-        when(todoRepository.findById(1L)).thenReturn(Optional.of(todo1));
+        todoDto.setTodoRequest(updateTodoRequest, user);
+        when(todoRepository.findTodoByIdAndUser(1L, user)).thenReturn(Optional.of(todo1));
 
         // when
         Todo updatedTodo = todoService.update(1L, todoDto);
@@ -133,9 +131,9 @@ public class TodoServiceTest {
     public void 할일_수정시_참조할일_수정() {
         // given
         TodoRequest updateTodoRequest = TodoRequest.builder().contents("손빨래").parentIds(Arrays.asList(1L, 2L)).build();
-        todoDto.setTodoRequest(updateTodoRequest);
-        when(todoRepository.findByIdIn(todoDto.getParentIds())).thenReturn(Arrays.asList(todo1, todo2));
-        when(todoRepository.findById(4L)).thenReturn(Optional.of(todo4));
+        todoDto.setTodoRequest(updateTodoRequest, user);
+        when(todoRepository.findTodoByIdInAndUser(todoDto.getParentIds(), user)).thenReturn(Arrays.asList(todo1, todo2));
+        when(todoRepository.findTodoByIdAndUser(4L, user)).thenReturn(Optional.of(todo4));
 
         // when
         Todo updatedTodo = todoService.update(4L, todoDto);
@@ -149,10 +147,10 @@ public class TodoServiceTest {
     public void ID2_할일_완료_처리_참조하고있는_할일이_없는경우() throws Exception {
         // given
         Long todoId = 2L;
-        when(todoRepository.findById(todoId)).thenReturn(Optional.of(todo2));
+        when(todoRepository.findTodoByIdAndUser(todoId, user)).thenReturn(Optional.of(todo2));
 
         // when
-        todoService.done(todoId);
+        todoService.done(todoId, user);
 
         // then
         assertThat(todo2.getStatus()).isEqualTo(TodoStatus.DONE);
@@ -161,16 +159,16 @@ public class TodoServiceTest {
     @Test
     public void ID1의_할일_완료_처리_ID2_3_4가_참조하고_있는경우() throws Exception {
         // given
-        when(todoRepository.findById(2L)).thenReturn(Optional.of(todo2));
-        when(todoRepository.findById(4L)).thenReturn(Optional.of(todo4));
-        when(todoRepository.findById(3L)).thenReturn(Optional.of(todo3));
-        when(todoRepository.findById(1L)).thenReturn(Optional.of(todo1));
+        when(todoRepository.findTodoByIdAndUser(2L, user)).thenReturn(Optional.of(todo2));
+        when(todoRepository.findTodoByIdAndUser(4L, user)).thenReturn(Optional.of(todo4));
+        when(todoRepository.findTodoByIdAndUser(3L, user)).thenReturn(Optional.of(todo3));
+        when(todoRepository.findTodoByIdAndUser(1L, user)).thenReturn(Optional.of(todo1));
 
         // when
-        todoService.done(2L);
-        todoService.done(4L);
-        todoService.done(3L);
-        todoService.done(1L);
+        todoService.done(2L, user);
+        todoService.done(4L, user);
+        todoService.done(3L, user);
+        todoService.done(1L, user);
 
         // then
         assertThat(todo2.getStatus()).isEqualTo(TodoStatus.DONE);
@@ -183,10 +181,10 @@ public class TodoServiceTest {
     public void ID1의_할일_완료_처리시_익센션발생_ID2_3_4가_참조하고_있는경우() throws Exception {
         // given
         Long todoId = 1L;
-        when(todoRepository.findById(todoId)).thenReturn(Optional.of(todo1));
+        when(todoRepository.findTodoByIdAndUser(todoId, user)).thenReturn(Optional.of(todo1));
 
         // when
-        todoService.done(todoId);
+        todoService.done(todoId, user);
         fail("TodoNotCompleteException이 발생해야 한다.");
     }
 }

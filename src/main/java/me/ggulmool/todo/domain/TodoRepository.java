@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
-    Page<Todo> findAll(Pageable pageable);
+    Page<Todo> findTodoByUser(Pageable pageable, User user);
 
-    Optional<Todo> findById(Long id);
+    Optional<Todo> findTodoByIdAndUser(Long id, User user);
 
-    List<Todo> findByIdIn(List<Long> ids);
+    List<Todo> findTodoByIdInAndUser(List<Long> ids, User user);
 }

@@ -16,10 +16,10 @@ public class UserService {
 
     public User authenticate(String userId, String password) {
         Optional<User> optUser = userRepository.findByUserId(userId);
-        User dbUser = optUser.orElseThrow(() -> new UnAuthenticationException("user not found"));
-        if (!dbUser.matchPassword(password)) {
-            throw new UnAuthenticationException("user password not matched!");
+        User selectedUser = optUser.orElseThrow(() -> new UnAuthenticationException("존재하지 않는 사용자 입니다."));
+        if (!selectedUser.matchPassword(password)) {
+            throw new UnAuthenticationException("패스워드가 틀립니다.");
         }
-        return dbUser;
+        return selectedUser;
     }
 }

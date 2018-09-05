@@ -1,9 +1,22 @@
-insert into user(user_id, name, password) values('ggulmool', '김남열', 'test1234');
-insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(1L, '집안일', 'DOING', '집안일', 'ggulmool', '2018-09-02 23:08:42.856','2018-09-02 23:08:42.856');
-insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(2L, '빨래', 'DOING', '빨래 @1', 'ggulmool', '2018-09-02 23:08:42.857','2018-09-02 23:08:42.857');
-insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(3L, '청소', 'DOING', '청소 @1', 'ggulmool', '2018-09-02 23:08:42.858','2018-09-02 23:08:42.858');
-insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(4L, '방청소', 'DOING', '방청소 @1 @3', 'ggulmool', '2018-09-02 23:08:42.859','2018-09-02 23:08:42.859');
+insert into user(user_id, name, password) values('user1', '김남열', 'test1234');
+insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(1L, '집안일', 'DOING', '집안일', 'user1', '2018-09-02 23:08:42.856','2018-09-02 23:08:42.856');
+insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(2L, '빨래', 'DOING', '빨래 @1', 'user1', '2018-09-02 23:08:42.857','2018-09-02 23:08:42.857');
+insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(3L, '청소', 'DOING', '청소 @1', 'user1', '2018-09-02 23:08:42.858','2018-09-02 23:08:42.858');
+insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(4L, '방청소', 'DOING', '방청소 @1 @3', 'user1', '2018-09-02 23:08:42.859','2018-09-02 23:08:42.859');
 insert into todo_parent_ref (todo_id, parent_id) values(2L, 1L);
 insert into todo_parent_ref (todo_id, parent_id) values(3L, 1L);
 insert into todo_parent_ref (todo_id, parent_id) values(4L, 1L);
 insert into todo_parent_ref (todo_id, parent_id) values(4L, 3L);
+
+insert into user(user_id, name, password) values('user2', '임요환', 'test1234');
+insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(5L, 'A집안일', 'DOING', 'A집안일', 'user2', '2018-09-02 23:08:42.856','2018-09-02 23:08:42.856');
+insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(6L, 'A빨래', 'DOING', 'A빨래 @5', 'user2', '2018-09-02 23:08:42.857','2018-09-02 23:08:42.857');
+insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(7L, 'A청소', 'DOING', 'A청소 @5', 'user2', '2018-09-02 23:08:42.858','2018-09-02 23:08:42.858');
+insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(8L, 'A방청소', 'DOING', 'A방청소 @5 @7', 'user2', '2018-09-02 23:08:42.859','2018-09-02 23:08:42.859');
+insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(9L, 'A거실청소', 'DOING', 'A방청소 @5 @7', 'user2', '2018-09-02 23:08:42.859','2018-09-02 23:08:42.859');
+insert into todo_parent_ref (todo_id, parent_id) values(6L, 5L);
+insert into todo_parent_ref (todo_id, parent_id) values(7L, 5L);
+insert into todo_parent_ref (todo_id, parent_id) values(8L, 5L);
+insert into todo_parent_ref (todo_id, parent_id) values(8L, 7L);
+insert into todo_parent_ref (todo_id, parent_id) values(9L, 5L);
+insert into todo_parent_ref (todo_id, parent_id) values(9L, 7L);
