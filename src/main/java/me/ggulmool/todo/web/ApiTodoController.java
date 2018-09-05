@@ -2,6 +2,7 @@ package me.ggulmool.todo.web;
 
 import lombok.extern.slf4j.Slf4j;
 import me.ggulmool.todo.domain.Todo;
+import me.ggulmool.todo.domain.User;
 import me.ggulmool.todo.service.TodoService;
 import me.ggulmool.todo.web.dto.TodoDto;
 import me.ggulmool.todo.web.dto.TodoRequest;
@@ -35,7 +36,8 @@ public class ApiTodoController {
     public PagingInfo<Todo> todos(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
-            @SortDefault(value = {"lastModifiedDate"}, direction = Sort.Direction.DESC) Sort sort) {
+            @SortDefault(value = {"lastModifiedDate"}, direction = Sort.Direction.DESC) Sort sort, @ModelAttribute("user") User user) {
+        log.info("user : {}", user);
         PageRequest pageRequest = new PageRequest(page - 1, size, sort);
         Page<Todo> todos = todoService.getTodos(pageRequest);
         return new PagingInfo<Todo>(todos);

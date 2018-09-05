@@ -1,13 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout">
+<html>
 <head>
-    <title>TodoApp</title>
+    <title>todolist</title>
+    <link type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <link type="text/css" href="css/angular-auto-complete/angular-auto-complete.css" rel="stylesheet"/>
+
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.min.js"/>
+    <script type="text/javascript" src="webjars/jquery-ui/1.12.1/jquery-ui.min.js"/>
+    <script type="text/javascript" src="webjars/angularjs/1.6.9/angular.min.js"/>
+    <script type="text/javascript" src="webjars/angularjs/1.6.9/angular-sanitize.min.js"/>
+    <script type="text/javascript" src="webjars/lodash/4.17.5/dist/lodash.min.js"/>
+
+    <script type="text/javascript" src="js/angular-auto-complete/angular-auto-complete.js"></script>
+    <script type="text/javascript" src="js/todo.app.js"></script>
+    <script type="text/javascript" src="js/todo.authInterceptor.js"></script>
+    <script type="text/javascript" src="js/todo.controller.js"></script>
+    <script type="text/javascript" src="js/todo.service.js"></script>
 </head>
 <body ng-app="TodoApp">
-<h1 layout:fragment="header">Todos</h1>
-<div layout:fragment="content" class="container" ng-controller="TodoCtrl as ctrl">
+
+<div class="container" ng-controller="TodoCtrl as ctrl">
     <div class="row">
+        <h1>Todos</h1>
         <div class="col-md-8">
             <div class="table-responsive">
                 <table class="table table-striped">

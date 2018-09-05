@@ -3,6 +3,7 @@ package me.ggulmool.todo.web.error;
 import lombok.extern.slf4j.Slf4j;
 import me.ggulmool.todo.domain.TodoCannotDoneException;
 import me.ggulmool.todo.domain.TodoNotFoundException;
+import me.ggulmool.todo.domain.UnAuthenticationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @Slf4j
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler({ UnAuthenticationException.class })
+    public ResponseEntity<Object> handleUnAuthentication(final RuntimeException ex, final WebRequest request) {
+        log.error("401 Status Code", ex);
+        final ErrorResponse bodyOfResponse = new ErrorResponse(ex.getMessage(), "unauthentication.exception");
+        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
+    }
 
     @ExceptionHandler({ TodoNotFoundException.class })
     public ResponseEntity<Object> handleTodoFound(final RuntimeException ex, final WebRequest request) {

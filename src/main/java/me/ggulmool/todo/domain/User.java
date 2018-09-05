@@ -1,20 +1,29 @@
 package me.ggulmool.todo.domain;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "USER")
+@Table(name = "user")
+@ToString
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
-    private Long id;
+    @Column(name = "user_id", length = 20, nullable = false)
+    private String userId;
 
     @Getter
-    @Column(name = "NAME", length = 20, nullable = false)
+    @Column(length = 20, nullable = false)
     private String name;
+
+    @Getter
+    @Column(length = 60, nullable = false)
+    private String password;
+
+    public boolean matchPassword(String password) {
+        return this.password.equals(password);
+    }
 }
