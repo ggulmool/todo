@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>todolist</title>
+    <link type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <link type="text/css" href="css/angular-auto-complete.css" rel="stylesheet"/>
+    <link type="text/css" href="css/ngProgress.css" rel="stylesheet"/>
+
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.min.js"/>
+    <script type="text/javascript" src="webjars/jquery-ui/1.12.1/jquery-ui.min.js"/>
+    <script type="text/javascript" src="webjars/angularjs/1.6.9/angular.min.js"/>
+    <script type="text/javascript" src="webjars/angularjs/1.6.9/angular-sanitize.min.js"/>
+    <script type="text/javascript" src="webjars/lodash/4.17.5/dist/lodash.min.js"/>
+
+    <script type="text/javascript" src="js/angular-auto-complete.js"></script>
+    <script type="text/javascript" src="js/ngprogress.min.js"></script>
+    <script type="text/javascript" src="js/todo.app.js"></script>
+    <script type="text/javascript" src="js/todo.authInterceptor.js"></script>
+    <script type="text/javascript" src="js/todo.controller.js"></script>
+    <script type="text/javascript" src="js/todo.service.js"></script>
+</head>
+<body ng-app="TodoApp">
+
+<div class="container" ng-controller="TodoCtrl as ctrl">
+    <div class="row">
+        <h1>TodoList</h1>
+        <div class="col-md-8">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>할일</th>
+                        <th>작성일시</th>
+                        <th>최종수정일시</th>
+                        <th>상태</th>
+                        <th>완료</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="todo in ctrl.pagingInfo.todos">
+                        <td>{{ todo.id }}</td>
+                        <td><a style="cursor: pointer;" ng-click="ctrl.getParentTodos(todo)">{{ todo.display_contents }}</a></td>
+                        <td>{{ todo.created_date}}</td>
+                        <td>{{ todo.last_modified_date }}</td>
+                        <td>{{ todo.status }}</td>
+                        <td><a ng-if="todo.status == 'DOING'" style="cursor: pointer;" ng-click="ctrl.done(todo.id)">완료</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation">
+                    <div style="text-align: center;">
+                        <ul class="pagination">
+                            <li ng-if="ctrl.pagingInfo.is_previous">
+                                <a style="cursor: pointer;" ng-click="ctrl.prevPage()" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li ng-repeat="p in ctrl.pagingInfo.page_elements" ng-class="{active: p.is_current == true}">
+                                <a style="cursor: pointer;" ng-click="ctrl.page(p.page)">{{p.page}}</a>
+                            </li>
+                            <li ng-if="ctrl.pagingInfo.is_next">
+                                <a style="cursor: pointer;" ng-click="ctrl.nextPage()" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">참조목록</div>
+                <div class="panel-body">
+                    <div ng-if="ctrl.parentTodos" class="selected-json">
+                        <pre>{{ctrl.parentTodos | json}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="navbar" class="navbar-collapse collapse">
+                <form class="navbar-form navbar-left">
+                    <div class="input-group">
+                        <span class="input-group-addon">할일</span>
+                        <input type="text"
+                               ng-model="ctrl.contents"
+                               class="form-control"
+                               style="width:250px" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="sizing-addon2">@참조</span>
+                        <input type="text"
+                               ng-model="ctrl.parentId"
+                               class="form-control"
+                               style="width:200px"
+                               aria-describedby="sizing-addon2"
+                               auto-complete="ctrl.autoCompleteOptions"/>
+                    </div>
+                    <a ng-if="ctrl.todoId == ''" class="btn btn-success" ng-click="ctrl.addTodo()">할일등록</a>
+                    <a ng-if="ctrl.todoId != ''" class="btn btn-success" ng-click="ctrl.updateTodo()">할일수정</a>
+                    <a ng-if="ctrl.todoId != ''" class="btn btn-info" ng-click="ctrl.delParentTodos()">참조삭제</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
