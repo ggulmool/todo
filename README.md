@@ -30,7 +30,7 @@ mvn clean test spring-boot:run 또는 ./mvnw clean test spring-boot:run
   - user2/abcd0987 (dXNlcjI6YWJjZDA5ODc=)
 
 - 실행화면
-![todo](./images/todo.png)
+![todo_main](./images/todo_main.png)
 ![todo_h2_console](./images/todo_h2_console.png)
 
 ## 구현설명
