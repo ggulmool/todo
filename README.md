@@ -1,4 +1,4 @@
-### 요구사항
+## 요구사항
 - 사용자는 텍스트로 된 할일을 추가할 수 있다.
 - 할일 추가 시 다른 할일들을 참조 걸 수 있다.
 - 참조는 다른 할일의 id를 명시하는 형태로 구현한다.
@@ -9,7 +9,7 @@
 - 사용자는 할일을 완료처리 할 수 있다.
 - 완료처리 시 참조가 걸린 완료되지 않은 할일이 있다면 완료처리할 수 없다.
 
-### 설치 및 실행
+## 설치 및 실행
 - 소스코드 빌드 및 실행
   - http://localhost:8080
   - http://localhost:8080/h2-console (db 확인)
@@ -33,7 +33,7 @@ mvn clean test spring-boot:run 또는 ./mvnw clean test spring-boot:run
 ![todo](./images/todo.png)
 ![todo_h2_console](./images/todo_h2_console.png)
 
-### 구현
+## 구현설명
 - 백엔드(RestAPI)
   - SpringBoot, JPA기반 구현
   - 도메인, 레포지토리, 서비스(Mockito사용) 단위테스트
@@ -54,8 +54,8 @@ mvn clean test spring-boot:run 또는 ./mvnw clean test spring-boot:run
     - 로딩바 처리
   - 참조할일 입력시 자동완성 기능
 
-### Rest API 구현목록
-#### HTTP Basic Authenticatoin 인증 처리
+## Rest API 구현목록
+### HTTP Basic Authenticatoin 인증 처리
 사용자id와 비밀번호를 http헤더에 Base64인코딩 형태로 넣어서 인증 요청하는 방식
 - "사용자id:비밀번호"문자열을 Base64 인코딩을 해서 'Authorization'헤더 값에 담겨 서버에 인증 요청
 ex) "user1:abcd1234" -> Authorization : Basic dXNlcjE6dGVzdDEyMzQ=
@@ -65,7 +65,7 @@ user1/test1234 (Basic dXNlcjE6dGVzdDEyMzQ=)
 user2/abcd0987 (Basic dXNlcjI6YWJjZDA5ODc=)
 ```
 
-#### 할일목록 조회
+### 할일목록 조회
 사용자의 할일목록을 조회(Basic인증키에 해당하는 사용자 정보를 참조)
 ```
 GET /api/todos HTTP/1.1
@@ -82,7 +82,7 @@ GET 'http://localhost:8080/api/todos?page=1&size=10' \
 - page : 페이지 번호(기본값:1)
 - size : 한페이지에 보여줄 데이터 갯수(기본값:10)
 
-#### 참조할일 목록조회
+### 참조할일 목록조회
 특정할일의 참조할일 목록을 조회
 ```
 GET /api/todos/{todoId}/parents HTTP/1.1
@@ -98,7 +98,7 @@ GET 'http://localhost:8080/api/todos/4/parents' \
 ```
 - todoId : 조회하고자 하는 기등록된 id값
 
-#### 할일등록
+### 할일등록
 사용자의 할일을 등록
 RequestBody에 등록할 데이터를 담아서 보낸다.
 ```
@@ -119,7 +119,7 @@ POST 'http://localhost:8080/api/todos' \
 - contents : 등록할 할일
 - parentIds : 참조할일의 id배열
 
-#### 할일수정
+### 할일수정
 사용자의 할일을 수정
 RequestBody에 수정할 데이터를 담아서 보낸다.
 ```
@@ -143,7 +143,7 @@ PUT 'http://localhost:8080/api/todos/4' \
 - parentIds : 참조할일의 id배열
 
 
-#### 할일완료
+### 할일완료
 ```
 PUT /api/todos/{todoId}/done HTTP/1.1
 Host: localhost:8080
@@ -158,7 +158,7 @@ PUT 'http://localhost:8080/api/todos/4/done' \
 ```
 - todoId : 완료하고자 하는 기등록된 id값
 
-### 사용한 라이브러리 및 오픈소스
+## 사용한 라이브러리 및 오픈소스
 - Java8
 - SpringBoot
 - JPA
