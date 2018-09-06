@@ -123,7 +123,7 @@ POST 'http://localhost:8080/api/todos' \
 사용자의 할일을 수정
 RequestBody에 수정할 데이터를 담아서 보낸다.
 ```
-PUT /api/todos/api/todos/{todoId} HTTP/1.1
+PUT /api/todos/{todoId} HTTP/1.1
 Host: localhost:8080
 Authorization: Basic {인증키값}
 Content-Type: application/json; charset=UTF-8
