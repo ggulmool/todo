@@ -39,10 +39,10 @@ mvn clean test spring-boot:run 또는 ./mvnw clean test spring-boot:run
   - 도메인, 레포지토리, 서비스(Mockito사용) 단위테스트
   - Todo도메인 설계
     - Todo엔티티를 ManyToMany관계의 self참조로 설계
-    - 참목록(parentTodo), 참조되고있는목록(refTodo)
+    - 참조하고 있는목록(parentTodo), 참조 당하고 있는목록(refTodo)
   - HTTP Basic 인증 처리
     - 스프링의 HandlerInterceptor를 구현하여 Controller를 호출하기 전에 http 헤더의 Authorization값을 확인하여 유효한 사용자인지 확인
-    - 세션을 사용하지 않고 REST API의 특징인 Stateless로 구현.
+    - 세션을 사용하지 않고 REST API의 특징인 상태정보를 저장하지 않는 형태로 구현(Stateless)
   - 예외처리
     - 예외 발생시 RestResponseExceptionHandler를 통해 에러코드와 에러 메시지 전달
   - 페이징 처리
