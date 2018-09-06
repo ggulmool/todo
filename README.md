@@ -15,7 +15,7 @@
   - http://localhost:8080/h2-console (db 확인)
 
 ```
-git clone https://github.com/ggulmool/todo.github
+git clone https://github.com/ggulmool/todo.git
 cd todo
 mvn clean test spring-boot:run 또는 ./mvnw clean test spring-boot:run
 ```
