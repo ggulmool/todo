@@ -8,7 +8,7 @@ insert into todo_parent_ref (todo_id, parent_id) values(3L, 1L);
 insert into todo_parent_ref (todo_id, parent_id) values(4L, 1L);
 insert into todo_parent_ref (todo_id, parent_id) values(4L, 3L);
 
-insert into user(user_id, name, password) values('user2', '임요환', 'test1234');
+insert into user(user_id, name, password) values('user2', '임요환', 'abcd0987');
 insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(5L, 'A집안일', 'DOING', 'A집안일', 'user2', '2018-09-02 23:08:42.856','2018-09-02 23:08:42.856');
 insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(6L, 'A빨래', 'DOING', 'A빨래 @5', 'user2', '2018-09-02 23:08:42.857','2018-09-02 23:08:42.857');
 insert into todo(todo_id, contents, status, display_contents, user_id, created_date, last_modified_date) values(7L, 'A청소', 'DOING', 'A청소 @5', 'user2', '2018-09-02 23:08:42.858','2018-09-02 23:08:42.858');

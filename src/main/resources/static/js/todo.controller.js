@@ -165,6 +165,8 @@
             TodoDataSvc.done(todoId)
                 .then(function(){
                     alert('완료처리 되었습니다.');
+                    self.todoId = '';
+                    self.contents = '';
                     viewClear();
                     getPagingTodos(1, self.pageSize)
                 }, function(response) {

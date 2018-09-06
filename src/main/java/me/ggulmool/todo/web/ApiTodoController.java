@@ -51,7 +51,7 @@ public class ApiTodoController {
     }
 
     @PostMapping
-    public ResponseEntity addTodo(@RequestBody TodoRequest todoRequest, HttpServletRequest request) {
+    public ResponseEntity<Todo> addTodo(@RequestBody TodoRequest todoRequest, HttpServletRequest request) {
         TodoDto todoDto = todoDtoFactory.getObject();
         todoDto.setTodoRequest(todoRequest, getUser(request));
         Todo todo = todoService.addTodo(todoDto);
@@ -62,17 +62,16 @@ public class ApiTodoController {
     }
 
     @PutMapping("/{todoId}")
-    public ResponseEntity updateTodo(@PathVariable Long todoId, @RequestBody TodoRequest todoRequest, HttpServletRequest request) {
+    public ResponseEntity<Todo> updateTodo(@PathVariable Long todoId, @RequestBody TodoRequest todoRequest, HttpServletRequest request) {
         TodoDto todoDto = todoDtoFactory.getObject();
         todoDto.setTodoRequest(todoRequest, getUser(request));
-        Todo updatedTodo = todoService.update(todoId, todoDto);
-        return new ResponseEntity<>(updatedTodo, HttpStatus.OK);
+        return ResponseEntity.ok(todoService.update(todoId, todoDto));
     }
 
     @PutMapping("/{todoId}/done")
     public ResponseEntity done(@PathVariable Long todoId, HttpServletRequest request) {
         todoService.done(todoId, getUser(request));
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 
     private User getUser(HttpServletRequest request) {
